@@ -6,19 +6,27 @@ import { AppComponent } from './app.component';
 import { EnterstockComponent } from './components/common/enterstock/enterstock.component';
 import { CurrentquoteComponent } from './components/common/currentquote/currentquote.component';
 import { SentimentcardComponent } from './components/common/sentimentcard/sentimentcard.component';
+import { FormsModule } from '@angular/forms';
+import { UtilityService } from './components/services/utility.service';
+import { HomeComponent } from './components/pages/home/home.component';
+import { QuoteService } from './components/services/quote.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     EnterstockComponent,
     CurrentquoteComponent,
-    SentimentcardComponent
+    SentimentcardComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [UtilityService, QuoteService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
