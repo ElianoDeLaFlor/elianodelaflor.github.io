@@ -11,6 +11,9 @@ import { UtilityService } from './components/services/utility.service';
 import { HomeComponent } from './components/pages/home/home.component';
 import { QuoteService } from './components/services/quote.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SentimentComponent } from './components/pages/sentiment/sentiment.component';
+import { SentimentService } from './components/services/sentiment.service';
+import { MonthPipe } from './components/pipes/month.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     EnterstockComponent,
     CurrentquoteComponent,
     SentimentcardComponent,
-    HomeComponent
+    HomeComponent,
+    SentimentComponent,
+    MonthPipe
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [UtilityService, QuoteService, HttpClient],
+  providers: [UtilityService, QuoteService, HttpClient, SentimentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,19 +1,22 @@
 <div>
     <div class="col-auto mb-3">
-        <span>Title</span>
+
+        <span>{{sentiment.month| month}}</span>
     </div>
     <div class="row">
         <div class="col-auto">
             <div class="col-auto">
-                <span>Change:-150</span>
+                <span>Change: {{sentiment.change|number:'3.0-0'}}</span>
             </div>
             <div class="col-auto">
-                <span>MSPR:12.56</span>
+                <span>MSPR: {{sentiment.mspr|number:'2.2'}}</span>
             </div>
         </div>
         <div class="col-auto">
-            <i class="bi bi-arrow-down fs-1 fw-bold text-success"></i>
-            <i class="bi bi-arrow-up fs-1 fw-bold text-danger"></i>
+            <i *ngIf="sentiment.change>0;else arrowdown" class="bi bi-arrow-up fs-1 fw-bold text-success"></i>
+            <ng-template #arrowdown>
+                <i class="bi bi-arrow-down fs-1 fw-bold text-danger"></i>
+            </ng-template>
         </div>
     </div>
 </div>

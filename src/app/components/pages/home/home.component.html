@@ -1,3 +1,9 @@
-<app-enterstock #enterstockcomp></app-enterstock>
+<div class="container">
+    <app-enterstock (newItemEvent)="addSymbolItem($event)"></app-enterstock>
 
-<button class="btn btn-primary" (click)="test()">test</button>
+    <div class="row" *ngIf="listQuotes.length>0">
+        <div class="col-6" *ngFor="let item of listQuotes">
+            <app-currentquote (deleteItemEvent)="deleteSymbolItem($event)" [quote]="item"></app-currentquote>
+        </div>
+    </div>
+</div>

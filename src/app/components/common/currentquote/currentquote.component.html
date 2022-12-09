@@ -5,10 +5,11 @@
 
                 <div class="d-flex justify-content-between">
                     <div>
-                        <h3>{{symbol}}</h3>
+                        <h3>{{symbol.description}} ({{symbol.displaySymbol}})</h3>
                     </div>
                     <div>
-                        <button id="remove{{symbol}}" type="button" class="btn-close" aria-label="Close"></button>
+                        <button (click)="deleteItem(symbol.displaySymbol)" id="remove{{symbol.displaySymbol}}"
+                            type="button" class="btn-close" aria-label="Close"></button>
                     </div>
                 </div>
             </div>
@@ -16,30 +17,33 @@
                 <div>
                     <div class="row">
                         <div class="col-auto">
-                            <span>Change today:+45</span>
+                            <span>Change today: {{quote.d|percent}}</span>
                         </div>
                         <div class="col-auto">
-                            <span>Opening Price:1,400</span>
+                            <span>Opening Price: {{quote.o| currency}}</span>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-auto">
-                            <span>Current price:+45</span>
+                            <span>Current price: {{quote.c| currency}}</span>
                         </div>
                         <div class="col-auto">
-                            <span>High Price:1,400</span>
+                            <span>High Price: {{quote.h| currency}}</span>
                         </div>
                     </div>
 
-                    <button id="sentiment{{symbol}}" class="btn btn-primary my-3">
+                    <a [routerLink]="['/sentiment',symbol.displaySymbol]" id="sentiment{{symbol.displaySymbol}}"
+                        class="btn btn-primary my-3">
                         Go to social sentiment details
                         <i class="bi bi-chevron-right"></i>
-                    </button>
+                    </a>
                 </div>
                 <div class="col-auto">
-                    <i class="bi bi-arrow-down fs-1 fw-bold text-success"></i>
-                    <i class="bi bi-arrow-up fs-1 fw-bold text-danger"></i>
+                    <i *ngIf="quote.d>0; else arrowdown" class="bi bi-arrow-up fs-1 fw-bold text-success"></i>
+                    <ng-template #arrowdown>
+                        <i class="bi bi-arrow-down fs-1 fw-bold text-danger"></i>
+                    </ng-template>
                 </div>
                 <div></div>
             </div>

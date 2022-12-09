@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h3>{{description}} ({{symbol}})</h3>
+            <div class="d-flex justify-content-between">
+                <div *ngFor="let item of sentiment.data">
+                    <app-sentimentcard [sentiment]="item"></app-sentimentcard>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <a id="backBtn" routerLink="/" class="btn btn-primary my-3">
+        <i class="bi bi-chevron-left"></i>
+        Back to list of stocks
+    </a>
+</div>

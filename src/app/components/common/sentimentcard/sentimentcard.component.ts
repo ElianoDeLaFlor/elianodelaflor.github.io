@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Sentiment } from '../../models/sentiment';
+import { Sentimentdata } from '../../models/sentimentdata';
+import { QuoteService } from '../../services/quote.service';
 
 @Component({
   selector: 'app-sentimentcard',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SentimentcardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private quoteservice: QuoteService) { }
+
+  @Input() sentiment = new Sentimentdata();
 
   ngOnInit(): void {
+
   }
+
 
 }

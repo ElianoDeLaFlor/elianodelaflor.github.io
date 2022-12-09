@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Symbol } from '../../models/symbol';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UtilityService } from '../../services/utility.service';
 
 @Component({
@@ -9,45 +8,25 @@ import { UtilityService } from '../../services/utility.service';
 })
 export class EnterstockComponent implements OnInit {
 
-  constructor(private utilityService: UtilityService) { }
-
+  constructor() { }
   symbol: string = "";
 
-  savedSymbol = new Array<string>();
+
+  @Output() newItemEvent = new EventEmitter<string>();
 
   ngOnInit(): void {
-    this.getSavedSymbol();
-  }
 
-  getSavedSymbol() {
-    this.savedSymbol = [];
-    let data = this.utilityService.getSymbol();
-    if (data) {
-      this.savedSymbol = data.split(',');
-      console.log("savedSymbol", this.savedSymbol);
-    } else {
-      this.savedSymbol = [];
-    }
-  }
-
-  saveSymbol(data: Array<string>) {
-    this.utilityService.saveSymbol(data);
   }
 
   onSubmit() {
-    if (!this.savedSymbol.includes(this.symbol)) {
-      this.savedSymbol.push(this.symbol);
-      this.saveSymbol(this.savedSymbol);
-    }
-
-    console.log("enterstock", this.symbol);
-    console.log("enterstocklst", this.savedSymbol);
+    //emit new item event
+    this.addNewItem(this.symbol);
+    //Empty the textinput
+    this.symbol = "";
   }
 
-  delete() {
-    this.utilityService.deleteSymbol();
-    this.getSavedSymbol();
-    console.log("deleted", this.savedSymbol);
+  addNewItem(value: string) {
+    this.newItemEvent.emit(value);
   }
 
 }
