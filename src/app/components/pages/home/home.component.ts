@@ -43,11 +43,17 @@ export class HomeComponent implements OnInit {
       this.enterstockcomp.savedSymbol.forEach(element => {
         this.quoteservice.getQuote(element.toUpperCase()).subscribe(rslt => {
           this.listQuotes.push(rslt);
+        }, (err: any) => {
+          console.log("error", err);
         })
       });
 
       console.log("this.listQuotes", this.listQuotes);
     }
+  }
+
+  test() {
+    this.getQuoteList();
   }
 
 
