@@ -31,8 +31,6 @@ export class SentimentComponent implements OnInit {
         this.getsymbol(this.symbol);
         this.getSentiment();
       } else {
-        //symbol param not provided
-        //return
         this.goBack();
       }
     })
@@ -44,16 +42,32 @@ export class SentimentComponent implements OnInit {
 
   getSentiment() {
     this.sentimentservice.getSentiment(this.symbol, this.getDateInterval()[1], this.getDateInterval()[0]).subscribe(rslt => {
-      console.log('sentiment', rslt);
       this.sentiment.symbol = this.symbol;
-      for (let index = 0; index < 3; index++) {
-        this.sentimentdata.push(rslt.data[index])
+      console.log('sentimentdata', rslt.data);
+      let months = this.geneDefaultSentimentData_(this.getDateInterval());
 
-      }
+      months.forEach(element => {
+        let index = rslt.data.findIndex(e => e.month == element)
+        if (index != -1) {
+          this.sentimentdata.push(rslt.data[index]);
+        } else {
+          this.sentimentdata.push(this.geneDefaultSentimentData(element, this.getDateInterval()[1]));
+        }
+      });
+
+
       this.sentiment.data = this.sentimentdata;
-      console.log('sentiment', this.sentiment);
-      console.log('sentimentdata', this.sentimentdata);
     })
+  }
+
+  sortByMonth(a: Sentimentdata, b: Sentimentdata) {
+    if (a.month < b.month) {
+      return -1;
+    }
+    if (a.month > b.month) {
+      return 1;
+    }
+    return 0;
   }
 
   getDateInterval(): [string, string] {
@@ -72,7 +86,7 @@ export class SentimentComponent implements OnInit {
 
     startday = day < 10 ? '0' + day : day + '';
 
-    let startDate = year + '-' + month + '-' + startday;
+    let startDate = year + '-' + startmonth + '-' + startday;
     //
 
     let lastmonth = month - 3;
@@ -103,6 +117,36 @@ export class SentimentComponent implements OnInit {
     this.quoteservice.getSymbol(symbol).subscribe((rslt) => {
       this.description = rslt.result[0].description;
     })
+  }
+
+  geneDefaultSentimentData(month: number, year: string): Sentimentdata {
+
+
+    let sd = new Sentimentdata();
+    sd.change = 0;
+    sd.month = month;
+    sd.mspr = 0;
+    sd.year = +year.split('-')[0];
+
+    console.log('default', sd);
+
+    return sd;
+  }
+
+  geneDefaultSentimentData_(date: [string, string]) {
+    //interval
+    let i = +date[0].split('-')[1];
+    let j = +date[1].split('-')[1];
+    let lst = new Array<number>();
+
+    for (let index = j; index < i; index++) {
+      lst.push(index);
+
+    }
+
+    console.log('mmmm', lst);
+
+    return lst;
   }
 
 }

@@ -1,9 +1,21 @@
 <div class="container">
     <app-enterstock (newItemEvent)="addSymbolItem($event)"></app-enterstock>
 
-    <div class="row" *ngIf="listQuotes.length>0">
+    <div class="row" *ngIf="listQuotes.length>0;else waiter">
         <div class="col-6" *ngFor="let item of listQuotes">
             <app-currentquote (deleteItemEvent)="deleteSymbolItem($event)" [quote]="item"></app-currentquote>
         </div>
     </div>
+
+    <ng-template #waiter>
+        <div *ngIf="savedSymbol.length>0">
+            <div class="card m-3">
+                <div class="card-body">
+                    Updating data ... Please wait a short moment.
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+    <button class="btn btn-danger m-3" (click)="delete_()">delete</button>
 </div>

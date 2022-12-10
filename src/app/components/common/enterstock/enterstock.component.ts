@@ -9,6 +9,8 @@ import { UtilityService } from '../../services/utility.service';
 export class EnterstockComponent implements OnInit {
 
   constructor() { }
+
+
   symbol: string = "";
 
 
@@ -19,8 +21,10 @@ export class EnterstockComponent implements OnInit {
   }
 
   onSubmit() {
+
     //emit new item event
     this.addNewItem(this.symbol);
+
     //Empty the textinput
     this.symbol = "";
   }

@@ -7,8 +7,6 @@ import { SentimentComponent } from './components/pages/sentiment/sentiment.compo
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'home', component: EnterstockComponent },
-  { path: 'quote', component: CurrentquoteComponent },
   { path: 'sentiment/:symbol', component: SentimentComponent }
 ];
 
