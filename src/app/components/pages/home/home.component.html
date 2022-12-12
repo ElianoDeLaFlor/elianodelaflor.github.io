@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container pb-4">
     <app-enterstock (newItemEvent)="addSymbolItem($event)"></app-enterstock>
 
     <div class="row" *ngIf="listQuotes.length>0;else waiter">
@@ -17,5 +17,5 @@
         </div>
 
     </ng-template>
-    <button class="btn btn-danger m-3" (click)="delete_()">delete</button>
+
 </div>

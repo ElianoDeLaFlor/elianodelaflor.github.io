@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { forkJoin, mergeMap, of } from 'rxjs';
 import { EnterstockComponent } from '../../common/enterstock/enterstock.component';
 import { Quote } from '../../models/quote';
+import { Stocksymbol } from '../../models/Stocksymbol';
 import { QuoteService } from '../../services/quote.service';
 import { UtilityService } from '../../services/utility.service';
 
@@ -29,7 +31,7 @@ export class HomeComponent implements OnInit {
   /**Retrieve the symbols saved in the local storage
    * 
    */
-  getSavedSymbol() {
+  getSavedSymbol(): void {
     this.savedSymbol = [];
     let data = this.utilityService.getSymbol();
     if (data) {
@@ -43,7 +45,7 @@ export class HomeComponent implements OnInit {
    * 
    * @param data Array<string> of string containing the symbols
    */
-  saveSymbol(data: Array<string>) {
+  saveSymbol(data: Array<string>): void {
     this.utilityService.saveSymbol(data);
   }
 
@@ -51,7 +53,7 @@ export class HomeComponent implements OnInit {
    * 
    * @param data string the symblol to add to the lacal storage
    */
-  addSymbolItem(data: string) {
+  addSymbolItem(data: string): void {
     this.getSavedSymbol();
 
     //Check if the symbol is not already added
@@ -67,7 +69,7 @@ export class HomeComponent implements OnInit {
    * 
    * @param data string symbol to delete
    */
-  deleteSymbolItem(data: string) {
+  deleteSymbolItem(data: string): void {
     this.getSavedSymbol();
 
     let itemindex = this.savedSymbol.findIndex(s => s == data);
@@ -82,7 +84,7 @@ export class HomeComponent implements OnInit {
   /**Empty the local storage containing the symbol
    * 
    */
-  delete_() {
+  delete_(): void {
     this.utilityService.deleteSymbol();
     this.getSavedSymbol();
   }
@@ -90,24 +92,24 @@ export class HomeComponent implements OnInit {
   /**Gets quotes data from the remote server
    * 
   */
-  getQuoteList() {
+  getQuoteList(): void {
 
     //reset quote list before adding quote elements
     this.listQuotes = [];
 
     //iterate through the symbol saved
-    this.savedSymbol.forEach(element => {
+    this.savedSymbol.forEach((element, index) => {
+      //array of observable
+      let array = [this.quoteservice.getQuote(element), this.quoteservice.getSymbol(element)];
+      forkJoin(array).subscribe(rslt => {
 
-      this.quoteservice.getQuote(element).subscribe((rslt) => {
+        (<Quote>rslt[0]).symbol = (<Stocksymbol>rslt[1]);
 
-        this.quoteservice.getSymbol(element).subscribe(sym => {
-          rslt.symbol = sym;
-          this.listQuotes.push(rslt);
-        })
+        this.listQuotes.push((<Quote>rslt[0]));
 
       });
-
     });
+
   }
 
 }

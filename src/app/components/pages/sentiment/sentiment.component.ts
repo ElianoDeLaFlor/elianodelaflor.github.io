@@ -5,6 +5,8 @@ import { Location } from '@angular/common';
 import { Sentiment } from '../../models/sentiment';
 import { Sentimentdata } from '../../models/sentimentdata';
 import { QuoteService } from '../../services/quote.service';
+import { Observable } from 'rxjs';
+import { Stocksymbol } from '../../models/Stocksymbol';
 
 @Component({
   selector: 'app-sentiment',
@@ -24,7 +26,7 @@ export class SentimentComponent implements OnInit {
   sentiment = new Sentiment();
   sentimentdata = new Array<Sentimentdata>();
 
-  getParam() {
+  getParam(): void {
     this.activatedroute.paramMap.subscribe(param => {
       if (param.has('symbol')) {
         this.symbol = param.get('symbol') as string;
@@ -37,21 +39,29 @@ export class SentimentComponent implements OnInit {
     })
   }
 
-  goBack() {
+  /**Go back to the previous url
+   * 
+   */
+  goBack(): void {
     this.location.back();
   }
 
-  getSentiment() {
+  getSentiment(): void {
     this.sentimentservice.getSentiment(this.symbol, this.getDateInterval()[1], this.getDateInterval()[0]).subscribe(rslt => {
+
       this.sentiment.symbol = this.symbol;
 
+      //get the list of the months to display
       let months = this.listOfMonthToDisplay(this.getDateInterval());
 
+      //for each month get the sentiment
       months.forEach(element => {
         let index = rslt.data.findIndex(e => e.month == element)
         if (index != -1) {
           this.sentimentdata.push(rslt.data[index]);
         } else {
+          //no data available for the month
+          //we set a default data
           this.sentimentdata.push(this.geneDefaultSentimentData(element, this.getDateInterval()[1]));
         }
       });
@@ -76,14 +86,15 @@ export class SentimentComponent implements OnInit {
     let startmonth: string = "";
 
     let startday: string = "";
+    // return two digits number for the month
+    startmonth = month < 10 ? '0' + month : month.toString();
 
-    startmonth = month < 10 ? '0' + month : month + '';
-
-    startday = day < 10 ? '0' + day : day + '';
+    // return two digits number for the day
+    startday = day < 10 ? '0' + day : day.toString();
 
     let startDate = year + '-' + startmonth + '-' + startday;
-    //
 
+    //get the last 3 month
     let lastmonth = month - 3;
 
     //if is negative we jump to the previous year
@@ -92,14 +103,14 @@ export class SentimentComponent implements OnInit {
       lastmonth = 11 + lastmonth;
     }
 
-    //start date
+    //end date
     let endmonth: string = "";
 
     let endday: string = "";
 
-    endmonth = lastmonth < 10 ? '0' + lastmonth : lastmonth + '';
+    endmonth = lastmonth < 10 ? '0' + lastmonth : lastmonth.toString();
 
-    endday = day < 10 ? '0' + day : day + '';
+    endday = day < 10 ? '0' + day : day.toString();
 
     let endDate = year + '-' + endmonth + '-' + endday;
 
@@ -108,7 +119,7 @@ export class SentimentComponent implements OnInit {
     return tuple2;
   }
 
-  getsymbol(symbol: string) {
+  getsymbol(symbol: string): void {
     this.quoteservice.getSymbol(symbol).subscribe((rslt) => {
       this.description = rslt.result[0].description;
     })
@@ -132,7 +143,7 @@ export class SentimentComponent implements OnInit {
     return sd;
   }
 
-  listOfMonthToDisplay(date: [string, string]) {
+  listOfMonthToDisplay(date: [string, string]): Array<number> {
 
     //get the start month
     let i = +date[0].split('-')[1];
