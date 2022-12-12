@@ -30,10 +30,10 @@ export class SentimentComponent implements OnInit {
     this.activatedroute.paramMap.subscribe(param => {
       if (param.has('symbol')) {
         this.symbol = param.get('symbol') as string;
-        this.getsymbol(this.symbol);
+        this.getSymbol(this.symbol);
         this.getSentiment();
       } else {
-        //go back to the previous link the a parameter is not provided
+        //go back to the previous link if a parameter is not provided
         this.goBack();
       }
     })
@@ -119,7 +119,7 @@ export class SentimentComponent implements OnInit {
     return tuple2;
   }
 
-  getsymbol(symbol: string): void {
+  getSymbol(symbol: string): void {
     this.quoteservice.getSymbol(symbol).subscribe((rslt) => {
       this.description = rslt.result[0].description;
     })

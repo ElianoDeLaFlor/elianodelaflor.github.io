@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Quote } from '../../models/quote';
 import { Stocksymbol } from '../../models/Stocksymbol';
 import { Symboldata } from '../../models/symboldata';
@@ -8,7 +8,7 @@ import { Symboldata } from '../../models/symboldata';
   templateUrl: './currentquote.component.html',
   styleUrls: ['./currentquote.component.scss']
 })
-export class CurrentquoteComponent implements OnInit, AfterViewInit {
+export class CurrentquoteComponent implements OnInit, AfterContentInit {
 
   constructor() { }
 
@@ -20,18 +20,13 @@ export class CurrentquoteComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(): void {
 
-  }
-
-  ngDoCheck(): void {
-
-  }
   ngAfterContentInit(): void {
     this.symbol = this.quote.symbol.result[0];
   }
 
   deleteItem(value: string) {
+    //emit delete event
     this.deleteItemEvent.emit(value);
   }
 

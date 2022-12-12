@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
   /**Empty the local storage containing the symbol
    * 
    */
-  delete_(): void {
+  delete(): void {
     this.utilityService.deleteSymbol();
     this.getSavedSymbol();
   }
