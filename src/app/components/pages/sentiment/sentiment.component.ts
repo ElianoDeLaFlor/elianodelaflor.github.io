@@ -31,6 +31,7 @@ export class SentimentComponent implements OnInit {
         this.getsymbol(this.symbol);
         this.getSentiment();
       } else {
+        //go back to the previous link the a parameter is not provided
         this.goBack();
       }
     })
@@ -43,8 +44,8 @@ export class SentimentComponent implements OnInit {
   getSentiment() {
     this.sentimentservice.getSentiment(this.symbol, this.getDateInterval()[1], this.getDateInterval()[0]).subscribe(rslt => {
       this.sentiment.symbol = this.symbol;
-      console.log('sentimentdata', rslt.data);
-      let months = this.geneDefaultSentimentData_(this.getDateInterval());
+
+      let months = this.listOfMonthToDisplay(this.getDateInterval());
 
       months.forEach(element => {
         let index = rslt.data.findIndex(e => e.month == element)
@@ -60,16 +61,10 @@ export class SentimentComponent implements OnInit {
     })
   }
 
-  sortByMonth(a: Sentimentdata, b: Sentimentdata) {
-    if (a.month < b.month) {
-      return -1;
-    }
-    if (a.month > b.month) {
-      return 1;
-    }
-    return 0;
-  }
-
+  /**Get the last 3 month from the actual date
+   * 
+   * @returns [string , string]
+   */
   getDateInterval(): [string, string] {
 
     let date = new Date();
@@ -119,6 +114,12 @@ export class SentimentComponent implements OnInit {
     })
   }
 
+  /** Generate a default sentiment ,to be set
+   * when there is no data for a month
+   * @param month number
+   * @param year string
+   * @returns Sentimentdata
+   */
   geneDefaultSentimentData(month: number, year: string): Sentimentdata {
 
 
@@ -128,25 +129,26 @@ export class SentimentComponent implements OnInit {
     sd.mspr = 0;
     sd.year = +year.split('-')[0];
 
-    console.log('default', sd);
-
     return sd;
   }
 
-  geneDefaultSentimentData_(date: [string, string]) {
-    //interval
+  listOfMonthToDisplay(date: [string, string]) {
+
+    //get the start month
     let i = +date[0].split('-')[1];
+
+    //get the end month
     let j = +date[1].split('-')[1];
+
+
     let lst = new Array<number>();
 
+    //store the concesutif month in an array
     for (let index = j; index < i; index++) {
       lst.push(index);
-
     }
-
-    console.log('mmmm', lst);
-
     return lst;
+
   }
 
 }

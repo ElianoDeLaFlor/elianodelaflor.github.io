@@ -97,6 +97,7 @@ export class HomeComponent implements OnInit {
 
     //iterate through the symbol saved
     this.savedSymbol.forEach(element => {
+
       this.quoteservice.getQuote(element).subscribe((rslt) => {
 
         this.quoteservice.getSymbol(element).subscribe(sym => {
