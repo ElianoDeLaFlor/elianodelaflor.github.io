@@ -1,7 +1,7 @@
 <div *ngIf="sentiment.change==0 && sentiment.mspr==0;else data_available">
     <div class="col-auto mb-3">
 
-        <span>{{sentiment.month| month}} {{sentiment.year}}</span>
+        <span>{{sentiment.month| month}}</span>
     </div>
     <div>
         No data available
@@ -11,7 +11,7 @@
 <ng-template #data_available>
     <div class="col-auto mb-3">
 
-        <span>{{sentiment.month| month}} {{sentiment.year}}</span>
+        <span>{{sentiment.month| month}} </span>
     </div>
     <div class="row">
         <div class="col-auto">
